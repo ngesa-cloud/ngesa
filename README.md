@@ -1,8 +1,8 @@
-# NGESA // The Immortal Stride &mdash; CJ (San Andreas) 🏃💨
+# NGESA // The Immortal Stride &mdash; Rolling Ball With A Head 🎱🗣️
 
-> **"Ah shit, here we go again."** &mdash; Carl Johnson (CJ)
+> **"Ah shit, here we roll again."** &mdash; Carl Johnson (CJ)
 
-An ultra-minimalist, infinite 3D runner simulation featuring **Carl Johnson (CJ)** from GTA San Andreas running infinitely with MAX stamina down an endless reflective runway. Built with procedural Three.js kinematics, authentic San Andreas textures (white ribbed tank top, baggy denim jeans, black canvas sneakers, gold chain, and buzzcut fade), and real-time telemetry.
+A minimalist, infinite 3D simulation of an immortal **rolling ball with a head perched on top**, rolling endlessly down an infinite reflective runway. Features true continuous angular rolling physics ($\omega = v / R$), gyro-stabilized head orientation, customizable ball skins (Grove Street 8-Ball, Cyber Grid, Gold Chrome), and head switching (CJ & Kipchoge).
 
 [![Deploy to GitHub Pages](https://github.com/ngesa-cloud/ngesa/actions/workflows/deploy.yml/badge.svg)](https://github.com/ngesa-cloud/ngesa/actions/workflows/deploy.yml)
 [![Live Demo](https://img.shields.io/badge/Demo-Live%20Simulation-22c55e?style=flat&logo=safari)](https://ngesa-cloud.github.io/ngesa/)
@@ -12,34 +12,26 @@ An ultra-minimalist, infinite 3D runner simulation featuring **Carl Johnson (CJ)
 
 ## ⚡ Simulation Features
 
-1. **Carl Johnson (CJ) Procedural 3D Rig:**
-   - **Top:** Iconic white ribbed sleeveless athletic tank top ("wifebeater").
-   - **Jeans:** Classic baggy stonewash indigo blue denim jeans with leather belt, brass buckle, and gold topstitching.
-   - **Footwear:** Black canvas low-top skate sneakers with vulcanized white rubber toe bumpers.
-   - **Jewelry & Accessories:** Gold curb Cuban chain around his neck and black digital watch on left wrist.
-   - **Head & Face:** 1992 San Andreas buzzcut fade haircut, defined jawline, and subtle mustache/goatee stubble.
-   - **Character Switcher:** Toggle freely between **CJ** and **Kipchoge** on the fly!
+1. **Continuous Angular Rolling Physics:**
+   - Sphere body ($R = 0.85\text{m}$) rolls smoothly forward along the runway with true rotational velocity: $\Delta \theta = \frac{v \cdot \Delta t}{R}$.
+   - Live telemetry monitors **ROTATION RPM** ($~375\text{ RPM}$ at $21.2\text{ km/h}$).
 
-2. **San Andreas Minimalist Road & Void:**
-   - Sleek dark reflective runway with razor-thin hairline edge guidelines and dashed centerline.
-   - Luminous green Grove Street laser guideline slicing through the dark.
-   - Curated Minimalist Palettes:
-     - **Grove Street:** Deep obsidian black with vibrant Grove Street green laser guide (`#00ff66`).
-     - **San Fierro:** Ocean mist slate blue with cool morning fill (`#38bdf8`).
-     - **Vinewood:** Twilight Los Santos amber sunset gradient (`#f97316`).
+2. **Gyro-Stabilized Articulated Head:**
+   - Perched atop the rolling sphere on a high-tech magnetic neck collar.
+   - Bobs subtly with roll harmonics, tilts aerodynamically into speed, and sways organically as it looks down the endless road.
+   - **CJ Head:** 1992 San Andreas buzzcut fade, dark eyes, goatee, and metallic gold Cuban chain with pendant draped around the collar!
+   - **Kipchoge Head:** Focused world-record marathon runner likeness.
 
-3. **San Andreas Telemetry HUD:**
+3. **Curated Ball Skins:**
+   - **Grove Street 8-Ball:** Glossy billiard black with white #8 insignia and neon green racing latitude stripes.
+   - **Cyber Grid:** Glowing green Tron digital matrix grid.
+   - **Gold Chrome:** Mirror-reflective metallic sphere.
+
+4. **Minimalist Typographic HUD:**
    - Real-time **DISTANCE** counter incrementing infinitely.
-   - Dynamic **SPEED** gauge (`12.0 KM/H`, `21.2 KM/H`, `40.0 KM/H`).
-   - **STAMINA: MAX 100%** & **RESPECT: + GROVE**.
-   - Iconic dialogue carousel ("Ah shit, here we go again.", "Grove Street. Home.", "All we had to do was follow the damn train, CJ!").
-
-4. **Dynamic Perspectives:**
-   - **Chase:** Third-person trailing behind CJ.
-   - **Front:** Head-on broadcast view.
-   - **Profile:** 90-degree lateral stride analysis.
-   - **Focus:** Close-up portrait view of CJ's face and upper body.
-   - **Orbit:** 360-degree cinematic orbital drone.
+   - **SPEED** gauge (`12.0 KM/H` Roll, `21.2 KM/H` Fast, `40.0 KM/H` Turbo).
+   - **ROTATION RPM** calculation.
+   - Dialogue carousel featuring classic CJ lines.
 
 ---
 
@@ -67,8 +59,8 @@ Open `http://localhost:8080` in your browser.
 
 ## 🛠️ Tech Stack
 
-- **Graphics:** [Three.js](https://threejs.org/) (WebGL 3D Rendering)
-- **Audio:** Web Audio API (Synthesized footstrikes)
+- **Graphics:** [Three.js](https://threejs.org/) (WebGL 3D Physics & Shaders)
+- **Audio:** Web Audio API (Synthesized rolling rumble)
 - **Styling:** Minimalist CSS3 (Glassmorphic pill HUD, typographic layout)
 - **Deployment:** GitHub Pages & GitHub Actions CI/CD
 - **PWA:** Service Worker caching & Web App Manifest

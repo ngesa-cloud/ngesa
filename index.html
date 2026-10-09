@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#04060a">
-  <title>NGESA // Carl Johnson (CJ) &mdash; San Andreas Stride</title>
-  <meta name="description" content="Infinite 3D runner simulation of Carl Johnson (CJ) running infinitely with MAX stamina in his iconic white tank and blue jeans.">
+  <title>NGESA // Rolling Ball With A Head</title>
+  <meta name="description" content="A minimalist, infinite 3D simulation of an immortal rolling ball with Carl Johnson's head perched on top, rolling endlessly down the road.">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css?v=cj_live_v2">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2322c55e%22/><text y=%2266%22 x=%2250%22 font-size=%2244%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23000%22>CJ</text></svg>">
+  <link rel="stylesheet" href="style.css?v=ball_v1">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%2322c55e%22/><circle cx=%2250%22 cy=%2250%22 r=%2222%22 fill=%22white%22/><text y=%2258%22 x=%2250%22 font-size=%2224%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22black%22>8</text></svg>">
   
   <!-- Automatic Cache Purge Script -->
   <script>
@@ -38,7 +38,7 @@
     <header class="topbar">
       <div class="brand">
         <span class="brand-title">NGESA</span>
-        <span class="brand-sub">CARL JOHNSON &bull; GROVE STREET STRIDE</span>
+        <span class="brand-sub">ROLLING BALL WITH A HEAD &bull; CJ EDITION</span>
       </div>
 
       <!-- Minimalist Inline Telemetry Stream -->
@@ -54,13 +54,13 @@
         </div>
         <div class="divider"></div>
         <div class="stat">
-          <span class="stat-label">STAMINA</span>
-          <span class="stat-val stamina-max" id="metricStamina">MAX 100%</span>
+          <span class="stat-label">ROLL</span>
+          <span class="stat-val stamina-max" id="metricRpm">375 <small>RPM</small></span>
         </div>
         <div class="divider"></div>
         <div class="stat">
-          <span class="stat-label">RESPECT</span>
-          <span class="stat-val respect-stat" id="metricRespect">+ GROVE</span>
+          <span class="stat-label">MODE</span>
+          <span class="stat-val respect-stat" id="metricMode">BALL+HEAD</span>
         </div>
       </div>
 
@@ -75,28 +75,40 @@
 
     <!-- Center Floating Minimalist Quotation -->
     <div class="quote-area">
-      <p class="quote-text" id="quoteText">&ldquo;Ah shit, here we go again.&rdquo;</p>
+      <p class="quote-text" id="quoteText">&ldquo;Ah shit, here we roll again.&rdquo;</p>
       <span class="quote-author">&mdash; Carl Johnson (CJ)</span>
     </div>
 
     <!-- Bottom Minimalist Controls Dock -->
     <footer class="bottom-dock">
-      <!-- Runner Selector -->
+      <!-- Head Selector -->
       <div class="control-group">
-        <span class="group-label">RUNNER</span>
+        <span class="group-label">HEAD</span>
         <div class="pill-buttons">
-          <button class="pill-btn active" data-runner="cj" onclick="setRunner('cj')">CJ</button>
-          <button class="pill-btn" data-runner="kipchoge" onclick="setRunner('kipchoge')">Kipchoge</button>
+          <button class="pill-btn active" data-head="cj" onclick="setHead('cj')">CJ Head</button>
+          <button class="pill-btn" data-head="kipchoge" onclick="setHead('kipchoge')">Kipchoge</button>
         </div>
       </div>
 
       <div class="dock-sep"></div>
 
-      <!-- Camera Angles (Default Front View) -->
+      <!-- Ball Skin Selector -->
+      <div class="control-group">
+        <span class="group-label">BALL</span>
+        <div class="pill-buttons">
+          <button class="pill-btn active" data-ball="eightball" onclick="setBallSkin('eightball')">8-Ball</button>
+          <button class="pill-btn" data-ball="cyber" onclick="setBallSkin('cyber')">Cyber Grid</button>
+          <button class="pill-btn" data-ball="gold" onclick="setBallSkin('gold')">Gold Chrome</button>
+        </div>
+      </div>
+
+      <div class="dock-sep"></div>
+
+      <!-- Camera Angles -->
       <div class="control-group">
         <span class="group-label">CAMERA</span>
         <div class="pill-buttons">
-          <button class="pill-btn active" data-cam="broadcast" onclick="setCameraMode('broadcast')">Front (Face)</button>
+          <button class="pill-btn active" data-cam="broadcast" onclick="setCameraMode('broadcast')">Front</button>
           <button class="pill-btn" data-cam="chase" onclick="setCameraMode('chase')">Behind</button>
           <button class="pill-btn" data-cam="profile" onclick="setCameraMode('profile')">Profile</button>
           <button class="pill-btn" data-cam="closeup" onclick="setCameraMode('closeup')">Focus</button>
@@ -110,27 +122,15 @@
       <div class="control-group">
         <span class="group-label">SPEED</span>
         <div class="pill-buttons">
-          <button class="pill-btn" data-pace="jog" onclick="setPacingMode('jog')">Jog</button>
-          <button class="pill-btn active" data-pace="sprint" onclick="setPacingMode('sprint')">Sprint</button>
-          <button class="pill-btn" data-pace="infinite" onclick="setPacingMode('infinite')">Super</button>
-        </div>
-      </div>
-
-      <div class="dock-sep"></div>
-
-      <!-- Minimalist San Andreas Palettes -->
-      <div class="control-group">
-        <span class="group-label">THEME</span>
-        <div class="pill-buttons">
-          <button class="pill-btn active" data-theme="grove" onclick="setTheme('grove')">Grove St</button>
-          <button class="pill-btn" data-theme="fierro" onclick="setTheme('fierro')">San Fierro</button>
-          <button class="pill-btn" data-theme="vinewood" onclick="setTheme('vinewood')">Vinewood</button>
+          <button class="pill-btn" data-pace="jog" onclick="setPacingMode('jog')">Roll</button>
+          <button class="pill-btn active" data-pace="sprint" onclick="setPacingMode('sprint')">Fast</button>
+          <button class="pill-btn" data-pace="infinite" onclick="setPacingMode('infinite')">Turbo</button>
         </div>
       </div>
     </footer>
 
   </main>
 
-  <script src="app.js?v=cj_live_v2"></script>
+  <script src="app.js?v=ball_v1"></script>
 </body>
 </html>

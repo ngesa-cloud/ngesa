@@ -1,6 +1,6 @@
 // ==============================================================================
-// NGESA // THE IMMORTAL STRIDE — CJ (CARL JOHNSON) MINIMALIST RUNNER ENGINE
-// Featuring CJ from GTA San Andreas running infinitely with Max Stamina
+// NGESA // THE IMMORTAL STRIDE — ROLLING BALL WITH A HEAD ENGINE
+// Physics-driven rolling sphere body with an articulated gyro head on top
 // ==============================================================================
 
 (function () {
@@ -8,14 +8,13 @@
 
   // Pacing & Speed Configurations
   const PACING_PROFILES = {
-    jog:      { label: '12.0', speedKmH: 12.0, cadence: 160, stamina: '95%' },
-    sprint:   { label: '21.2', speedKmH: 21.18, cadence: 188, stamina: 'MAX 100%' },
-    infinite: { label: '40.0', speedKmH: 40.0, cadence: 220, stamina: 'INFINITE' }
+    jog:      { label: '12.0', speedKmH: 12.0, cadence: 160 },
+    sprint:   { label: '21.2', speedKmH: 21.18, cadence: 188 },
+    infinite: { label: '40.0', speedKmH: 40.0, cadence: 220 }
   };
 
   const THEMES = {
     grove: {
-      name: 'Grove Street',
       bg: 0x04060a,
       fog: 0x04060a,
       road: 0x080c14,
@@ -24,52 +23,29 @@
       ambient: 0x64748b,
       sun: 0xfffaed,
       rim: 0x22c55e
-    },
-    fierro: {
-      name: 'San Fierro Fog',
-      bg: 0x080e18,
-      fog: 0x080e18,
-      road: 0x0f172a,
-      ground: 0x040812,
-      laser: 0x38bdf8,
-      ambient: 0x94a3b8,
-      sun: 0xf0f9ff,
-      rim: 0x0284c7
-    },
-    vinewood: {
-      name: 'Vinewood Sunset',
-      bg: 0x12080a,
-      fog: 0x12080a,
-      road: 0x180c10,
-      ground: 0x0a0406,
-      laser: 0xf97316,
-      ambient: 0xfbbf24,
-      sun: 0xffedd5,
-      rim: 0xf43f5e
     }
   };
 
-  const CJ_QUOTES = [
-    "Ah shit, here we go again.",
-    "Grove Street. Home. At least it was before I fucked everything up.",
+  const ROLLING_QUOTES = [
+    "Ah shit, here we roll again.",
+    "They see me rollin', they hatin'...",
+    "Grove Street on the roll, homie!",
     "All we had to do was follow the damn train, CJ!",
-    "Ain't nobody gonna stop me today, homie.",
-    "I'm a Grove Street OG, born and raised.",
-    "Yeah, this is my hood.",
-    "You picked the wrong house, fool!",
-    "No human is limited &mdash; not even in Los Santos."
+    "Ain't nobody gonna stop this ball today.",
+    "Keep on rollin', baby!",
+    "No Human Is Limited &mdash; even as a rolling ball."
   ];
 
-  // Engine State — DEFAULT TO CJ AND FRONT VIEW
+  // Engine State
   const state = {
-    currentRunner: 'cj',
+    currentHead: 'cj',
+    currentBall: 'eightball',
     currentPace: 'sprint',
-    currentTheme: 'grove',
-    cameraMode: 'broadcast', // FRONT (FACE) VIEW DEFAULT
+    cameraMode: 'broadcast', // Front (Face) View
     audioEnabled: false,
     distanceKm: 0.0,
     startTime: Date.now(),
-    stridePhase: 0.0,
+    rollAngle: 0.0,
     quoteIdx: 0
   };
 
@@ -89,7 +65,7 @@
   renderer.toneMappingExposure = 1.15;
   container.appendChild(renderer.domElement);
 
-  // Minimalist Museum Lighting
+  // Museum Lighting
   const ambientLight = new THREE.AmbientLight(THEMES.grove.ambient, 0.7);
   scene.add(ambientLight);
 
@@ -98,7 +74,6 @@
   sunLight.castShadow = true;
   sunLight.shadow.mapSize.width = 2048;
   sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.bias = -0.0004;
   scene.add(sunLight);
 
   const rimLight = new THREE.DirectionalLight(THEMES.grove.rim, 0.9);
@@ -106,33 +81,72 @@
   scene.add(rimLight);
 
   // ==============================================================================
-  // 1. PROCEDURAL TEXTURES (CJ & KIPCHOGE)
+  // 1. PROCEDURAL TEXTURES
   // ==============================================================================
 
-  // CJ Skin
-  function createCJSkinTexture() {
+  // Ball Skin 1: Billiard 8-Ball with Grove Street Green Racing Stripes
+  function createEightBallTexture() {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
     canvas.height = 512;
     const ctx = canvas.getContext('2d');
 
-    const grad = ctx.createLinearGradient(0, 0, 0, 512);
-    grad.addColorStop(0, '#4a2c1a');
-    grad.addColorStop(0.5, '#3e2316');
-    grad.addColorStop(1, '#2c180d');
-    ctx.fillStyle = grad;
+    // Glossy Billiard Black
+    ctx.fillStyle = '#080c14';
     ctx.fillRect(0, 0, 512, 512);
 
-    for (let i = 0; i < 1200; i++) {
-      const x = Math.random() * 512;
-      const y = Math.random() * 512;
-      ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.12)';
-      ctx.fillRect(x, y, 1.5, 1.5);
+    // Neon Grove Street Latitude Stripes (Makes rolling motion hypnotically visible)
+    ctx.fillStyle = '#22c55e';
+    ctx.fillRect(0, 90, 512, 28);
+    ctx.fillRect(0, 394, 512, 28);
+
+    // White Circle for the #8 (Repeated front & back for 360-degree rolling visibility)
+    [128, 384].forEach(x => {
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath();
+      ctx.arc(x, 256, 75, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bold Numeral "8"
+      ctx.fillStyle = '#080c14';
+      ctx.font = '900 85px -apple-system, monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('8', x, 256);
+    });
+
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  // Ball Skin 2: Cyber Tron Grid
+  function createCyberGridTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#050811';
+    ctx.fillRect(0, 0, 512, 512);
+
+    ctx.strokeStyle = '#00ff66';
+    ctx.lineWidth = 6;
+    for (let i = 0; i < 512; i += 64) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0); ctx.lineTo(i, 512);
+      ctx.moveTo(0, i); ctx.lineTo(512, i);
+      ctx.stroke();
+    }
+
+    ctx.fillStyle = '#38bdf8';
+    for (let x = 64; x < 512; x += 128) {
+      for (let y = 64; y < 512; y += 128) {
+        ctx.fillRect(x - 8, y - 8, 16, 16);
+      }
     }
     return new THREE.CanvasTexture(canvas);
   }
 
-  // CJ Head & Face (Buzzcut, Goatee, Mustache, Focused 90s Expression)
+  // CJ Face Texture
   function createCJFaceTexture() {
     const canvas = document.createElement('canvas');
     canvas.width = 512;
@@ -191,10 +205,8 @@
     // Nose
     ctx.fillStyle = 'rgba(25, 14, 8, 0.75)';
     ctx.beginPath();
-    ctx.moveTo(250, 230);
-    ctx.lineTo(262, 230);
-    ctx.lineTo(270, 320);
-    ctx.lineTo(242, 320);
+    ctx.moveTo(250, 230); ctx.lineTo(262, 230);
+    ctx.lineTo(270, 320); ctx.lineTo(242, 320);
     ctx.closePath();
     ctx.fill();
 
@@ -226,35 +238,62 @@
     return new THREE.CanvasTexture(canvas);
   }
 
+  // Kipchoge Face Texture
+  function createKipchogeFaceTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 512; canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#382214'; ctx.fillRect(0, 0, 512, 512);
+
+    ctx.fillStyle = '#1c1008';
+    ctx.beginPath(); ctx.ellipse(190, 248, 22, 10, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(322, 248, 22, 10, 0, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#442618';
+    ctx.beginPath(); ctx.ellipse(256, 375, 30, 9, 0, 0, Math.PI * 2); ctx.fill();
+    return new THREE.CanvasTexture(canvas);
+  }
+
   // Ground Shadow Texture
   function createRadialShadowTexture() {
     const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 256;
+    canvas.width = 256; canvas.height = 256;
     const ctx = canvas.getContext('2d');
-
     const grad = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
     grad.addColorStop(0, 'rgba(0, 0, 0, 0.7)');
     grad.addColorStop(0.6, 'rgba(0, 0, 0, 0.25)');
     grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 256, 256);
-
     return new THREE.CanvasTexture(canvas);
   }
 
   // Pre-generate Textures
-  const cjSkinTex = createCJSkinTexture();
+  const eightBallTex = createEightBallTexture();
+  const cyberGridTex = createCyberGridTexture();
   const cjFaceTex = createCJFaceTexture();
+  const kipchogeFaceTex = createKipchogeFaceTexture();
   const shadowTex = createRadialShadowTexture();
 
   // Materials
-  const cjSkinMat = new THREE.MeshPhysicalMaterial({
-    color: 0x3e2316,
-    map: cjSkinTex,
-    roughness: 0.38,
-    metalness: 0.04,
-    clearcoat: 0.35
+  const eightBallMat = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: eightBallTex,
+    roughness: 0.25,
+    metalness: 0.3
+  });
+
+  const cyberGridMat = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    map: cyberGridTex,
+    roughness: 0.3,
+    metalness: 0.7
+  });
+
+  const goldChromeMat = new THREE.MeshStandardMaterial({
+    color: 0xf59e0b,
+    roughness: 0.15,
+    metalness: 0.95
   });
 
   const cjFaceMat = new THREE.MeshPhysicalMaterial({
@@ -264,69 +303,31 @@
     metalness: 0.02
   });
 
-  // CJ's Pure White Ribbed Tank Top
-  const cjTankMat = new THREE.MeshStandardMaterial({
-    color: 0xf8fafc,
-    roughness: 0.5
+  const kipchogeFaceMat = new THREE.MeshPhysicalMaterial({
+    color: 0xffffff,
+    map: kipchogeFaceTex,
+    roughness: 0.4,
+    metalness: 0.02
   });
 
-  // CJ's Baggy Denim Blue Jeans
-  const cjJeansMat = new THREE.MeshStandardMaterial({
-    color: 0x1d4ed8, // Vibrant San Andreas Indigo Denim
-    roughness: 0.75
+  const cjSkinMat = new THREE.MeshPhysicalMaterial({
+    color: 0x3e2316,
+    roughness: 0.38,
+    metalness: 0.04
   });
 
-  // Leather Belt Material
-  const beltMat = new THREE.MeshStandardMaterial({
-    color: 0x451a03,
-    roughness: 0.6
-  });
-
-  // Brass Buckle Material
-  const buckleMat = new THREE.MeshStandardMaterial({
-    color: 0xf59e0b,
-    metalness: 0.9,
-    roughness: 0.25
-  });
-
-  // Gold Cuban Chain
   const goldChainMat = new THREE.MeshStandardMaterial({
     color: 0xf59e0b,
     roughness: 0.2,
     metalness: 0.95
   });
 
-  // Black Canvas Sneaker Upper
-  const sneakerUpperMat = new THREE.MeshStandardMaterial({
-    color: 0x0f172a,
-    roughness: 0.75
-  });
-
-  // White Rubber Sole & Toe Cap
-  const rubberWhiteMat = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    roughness: 0.35
-  });
-
-  // Grove Street Green Bandana / Wristband
-  const groveBandMat = new THREE.MeshStandardMaterial({
-    color: 0x16a34a,
-    roughness: 0.5
-  });
-
-  // Watch Material
-  const watchMat = new THREE.MeshStandardMaterial({
-    color: 0x090d16,
-    roughness: 0.3
-  });
-
   // ==============================================================================
-  // 2. MINIMALIST INFINITE ROAD (GROVE STREET / RUNWAY)
+  // 2. MINIMALIST INFINITE ROAD (RUNWAY)
   // ==============================================================================
   const runwayWidth = 6.0;
   const runwayLength = 260;
 
-  // Runway Surface
   const roadGeo = new THREE.PlaneGeometry(runwayWidth, runwayLength, 1, 1);
   const roadMat = new THREE.MeshStandardMaterial({
     color: THEMES.grove.road,
@@ -389,273 +390,82 @@
   scene.add(ground);
 
   // ==============================================================================
-  // 3. ATHLETE 3D RIG BUILDER (CARL JOHNSON & KIPCHOGE)
+  // 3. ROLLING BALL WITH A HEAD RIG
   // ==============================================================================
+  const ballRadius = 0.85;
 
-  function buildRunner(type) {
-    const rig = new THREE.Group();
-    const isCJ = (type === 'cj');
+  const characterRig = new THREE.Group();
+  scene.add(characterRig);
 
-    // 1. Pelvis & Waist
-    const pelvis = new THREE.Mesh(new THREE.CylinderGeometry(0.29, 0.26, 0.32, 16), isCJ ? cjJeansMat : cjJeansMat);
-    pelvis.position.y = 1.95;
-    rig.add(pelvis);
+  // 1. The Rolling Ball Sphere
+  const ballGeo = new THREE.SphereGeometry(ballRadius, 32, 32);
+  const ballMesh = new THREE.Mesh(ballGeo, eightBallMat);
+  ballMesh.position.y = ballRadius;
+  ballMesh.castShadow = true;
+  characterRig.add(ballMesh);
 
-    if (isCJ) {
-      // Leather Belt on Waist
-      const belt = new THREE.Mesh(new THREE.CylinderGeometry(0.295, 0.285, 0.08, 16), beltMat);
-      belt.position.y = 0.12;
-      pelvis.add(belt);
+  // 2. Gyro Magnetic Neck Collar atop the Rolling Ball
+  const collarMount = new THREE.Group();
+  collarMount.position.y = ballRadius * 2 - 0.02; // Sits right at apex of sphere
+  characterRig.add(collarMount);
 
-      // Brass Belt Buckle
-      const buckle = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.06, 0.04), buckleMat);
-      buckle.position.set(0, 0.12, 0.29);
-      pelvis.add(buckle);
-    }
+  // High-tech magnetic ring / collar
+  const collarRing = new THREE.Mesh(
+    new THREE.TorusGeometry(0.24, 0.04, 16, 32),
+    new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.3, metalness: 0.8 })
+  );
+  collarRing.rotation.x = Math.PI / 2;
+  collarMount.add(collarRing);
 
-    // 2. Torso (Chest & Tank Top)
-    const torso = new THREE.Group();
-    torso.position.y = 0.22;
-    pelvis.add(torso);
+  // 3. The Gyro Head Mount (Stabilized, bobs & looks around)
+  const headGroup = new THREE.Group();
+  headGroup.position.y = 0.28;
+  collarMount.add(headGroup);
 
-    const chest = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.28, 0.58, 16), isCJ ? cjTankMat : cjTankMat);
-    chest.position.y = 0.36;
-    chest.castShadow = true;
-    torso.add(chest);
+  // Head Mesh
+  const headGeo = new THREE.SphereGeometry(0.3, 24, 24);
+  headGeo.scale(0.92, 1.15, 1.05);
+  const headMesh = new THREE.Mesh(headGeo, cjFaceMat);
+  headMesh.castShadow = true;
+  headGroup.add(headMesh);
 
-    const leftPec = new THREE.Mesh(new THREE.SphereGeometry(0.15, 12, 12), isCJ ? cjTankMat : cjTankMat);
-    leftPec.scale.set(1.1, 0.7, 0.6);
-    leftPec.position.set(-0.14, 0.44, 0.15);
-    torso.add(leftPec);
+  // 3D Nose
+  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.14, 8), cjSkinMat);
+  nose.rotation.x = Math.PI / 2 + 0.25;
+  nose.position.set(0, 0.02, 0.28);
+  headGroup.add(nose);
 
-    const rightPec = new THREE.Mesh(new THREE.SphereGeometry(0.15, 12, 12), isCJ ? cjTankMat : cjTankMat);
-    rightPec.scale.set(1.1, 0.7, 0.6);
-    rightPec.position.set(0.14, 0.44, 0.15);
-    torso.add(rightPec);
+  // 3D Ears
+  const leftEar = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.05, 0.04, 8), cjSkinMat);
+  leftEar.rotation.z = Math.PI / 2;
+  leftEar.position.set(-0.28, 0.02, 0.0);
+  headGroup.add(leftEar);
 
-    // 3. Neck & Gold Cuban Chain
-    const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 0.22, 12), cjSkinMat);
-    neck.position.y = 0.72;
-    torso.add(neck);
+  const rightEar = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.05, 0.04, 8), cjSkinMat);
+  rightEar.rotation.z = -Math.PI / 2;
+  rightEar.position.set(0.28, 0.02, 0.0);
+  headGroup.add(rightEar);
 
-    if (isCJ) {
-      // Metallic Gold Cuban Link Chain
-      const chain = new THREE.Mesh(new THREE.TorusGeometry(0.145, 0.022, 10, 24), goldChainMat);
-      chain.rotation.x = Math.PI / 2.3;
-      chain.position.set(0, 0.68, 0.03);
-      torso.add(chain);
+  // CJ's Gold Cuban Chain Draped around the Neck Collar
+  const goldChain = new THREE.Mesh(
+    new THREE.TorusGeometry(0.25, 0.026, 12, 32),
+    goldChainMat
+  );
+  goldChain.rotation.x = Math.PI / 2.3;
+  goldChain.position.set(0, 0.08, 0.04);
+  collarMount.add(goldChain);
 
-      // Chain Pendant
-      const pendant = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.06, 0.02), goldChainMat);
-      pendant.position.set(0, 0.53, 0.16);
-      torso.add(pendant);
-    }
-
-    const headGroup = new THREE.Group();
-    headGroup.position.y = 0.24;
-    neck.add(headGroup);
-
-    const head = new THREE.Mesh(new THREE.SphereGeometry(0.24, 24, 24), cjFaceMat);
-    head.scale.set(0.92, 1.15, 1.05);
-    head.castShadow = true;
-    headGroup.add(head);
-
-    const nose = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.12, 8), cjSkinMat);
-    nose.rotation.x = Math.PI / 2 + 0.25;
-    nose.position.set(0, 0.02, 0.23);
-    headGroup.add(nose);
-
-    const leftEar = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.04, 0.03, 8), cjSkinMat);
-    leftEar.rotation.z = Math.PI / 2;
-    leftEar.position.set(-0.22, 0.02, 0.0);
-    headGroup.add(leftEar);
-
-    const rightEar = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.04, 0.03, 8), cjSkinMat);
-    rightEar.rotation.z = -Math.PI / 2;
-    rightEar.position.set(0.22, 0.02, 0.0);
-    headGroup.add(rightEar);
-
-    // 4. Arms & Fists
-    // Left Arm
-    const leftShoulder = new THREE.Group();
-    leftShoulder.position.set(-0.38, 0.54, 0.0);
-    torso.add(leftShoulder);
-
-    const leftDeltoid = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), cjSkinMat);
-    leftDeltoid.scale.set(0.9, 1.1, 0.9);
-    leftShoulder.add(leftDeltoid);
-
-    const leftUpperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.08, 0.55, 12), cjSkinMat);
-    leftUpperArm.position.y = -0.275;
-    leftUpperArm.castShadow = true;
-    leftShoulder.add(leftUpperArm);
-
-    const leftElbow = new THREE.Group();
-    leftElbow.position.set(0, -0.275, 0);
-    leftUpperArm.add(leftElbow);
-
-    const leftForearm = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.065, 0.5, 12), cjSkinMat);
-    leftForearm.position.y = -0.25;
-    leftForearm.castShadow = true;
-    leftElbow.add(leftForearm);
-    leftElbow.rotation.x = -1.5;
-
-    // CJ's Black Digital Watch on Left Wrist
-    const watch = new THREE.Mesh(new THREE.CylinderGeometry(0.076, 0.076, 0.05, 16), watchMat);
-    watch.position.set(0, -0.22, 0);
-    leftForearm.add(watch);
-
-    const leftFist = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 10), cjSkinMat);
-    leftFist.scale.set(0.9, 1.2, 0.8);
-    leftFist.position.set(0, -0.32, 0);
-    leftForearm.add(leftFist);
-
-    // Right Arm
-    const rightShoulder = new THREE.Group();
-    rightShoulder.position.set(0.38, 0.54, 0.0);
-    torso.add(rightShoulder);
-
-    const rightDeltoid = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), cjSkinMat);
-    rightDeltoid.scale.set(0.9, 1.1, 0.9);
-    rightShoulder.add(rightDeltoid);
-
-    const rightUpperArm = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.08, 0.55, 12), cjSkinMat);
-    rightUpperArm.position.y = -0.275;
-    rightUpperArm.castShadow = true;
-    rightShoulder.add(rightUpperArm);
-
-    const rightElbow = new THREE.Group();
-    rightElbow.position.set(0, -0.275, 0);
-    rightUpperArm.add(rightElbow);
-
-    const rightForearm = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.065, 0.5, 12), cjSkinMat);
-    rightForearm.position.y = -0.25;
-    rightForearm.castShadow = true;
-    rightElbow.add(rightForearm);
-    rightElbow.rotation.x = -1.5;
-
-    // Grove Street Green Bandana / Wristband on Right Wrist
-    if (isCJ) {
-      const groveBand = new THREE.Mesh(new THREE.CylinderGeometry(0.078, 0.078, 0.05, 16), groveBandMat);
-      groveBand.position.set(0, -0.22, 0);
-      rightForearm.add(groveBand);
-    }
-
-    const rightFist = new THREE.Mesh(new THREE.SphereGeometry(0.075, 10, 10), cjSkinMat);
-    rightFist.scale.set(0.9, 1.2, 0.8);
-    rightFist.position.set(0, -0.32, 0);
-    rightForearm.add(rightFist);
-
-    // 5. Lower Limbs (Baggy Blue Jeans & Black/White Canvas Sneakers)
-    function createShoeMesh() {
-      const shoeGroup = new THREE.Group();
-
-      // White vulcanized rubber sole
-      const sole = new THREE.Mesh(new THREE.BoxGeometry(0.22, 0.08, 0.6), rubberWhiteMat);
-      sole.position.set(0, -0.06, 0.08);
-      sole.castShadow = true;
-      shoeGroup.add(sole);
-
-      // Black canvas sneaker upper
-      const upper = new THREE.Mesh(new THREE.SphereGeometry(0.13, 12, 12), sneakerUpperMat);
-      upper.scale.set(0.85, 0.75, 1.8);
-      upper.position.set(0, 0.04, 0.09);
-      shoeGroup.add(upper);
-
-      // White rubber toe bumper
-      const toeCap = new THREE.Mesh(new THREE.SphereGeometry(0.11, 10, 10), rubberWhiteMat);
-      toeCap.scale.set(0.86, 0.7, 0.9);
-      toeCap.position.set(0, 0.02, 0.26);
-      shoeGroup.add(toeCap);
-
-      return shoeGroup;
-    }
-
-    // Left Leg
-    const leftHip = new THREE.Group();
-    leftHip.position.set(-0.16, -0.16, 0);
-    pelvis.add(leftHip);
-
-    const leftThigh = new THREE.Mesh(new THREE.CylinderGeometry(0.165, 0.135, 0.82, 16), cjJeansMat);
-    leftThigh.position.y = -0.41;
-    leftThigh.castShadow = true;
-    leftHip.add(leftThigh);
-
-    const leftKnee = new THREE.Group();
-    leftKnee.position.set(0, -0.41, 0);
-    leftThigh.add(leftKnee);
-
-    const leftCalf = new THREE.Mesh(new THREE.CylinderGeometry(0.135, 0.115, 0.84, 16), cjJeansMat);
-    leftCalf.position.y = -0.42;
-    leftCalf.castShadow = true;
-    leftKnee.add(leftCalf);
-
-    // Baggy Denim Cuffs at Ankles
-    const leftCuff = new THREE.Mesh(new THREE.CylinderGeometry(0.138, 0.142, 0.12, 12), cjJeansMat);
-    leftCuff.position.set(0, -0.38, 0);
-    leftCalf.add(leftCuff);
-
-    const leftAnkle = new THREE.Group();
-    leftAnkle.position.set(0, -0.42, 0);
-    leftCalf.add(leftAnkle);
-    leftAnkle.add(createShoeMesh());
-
-    // Right Leg
-    const rightHip = new THREE.Group();
-    rightHip.position.set(0.16, -0.16, 0);
-    pelvis.add(rightHip);
-
-    const rightThigh = new THREE.Mesh(new THREE.CylinderGeometry(0.165, 0.135, 0.82, 16), cjJeansMat);
-    rightThigh.position.y = -0.41;
-    rightThigh.castShadow = true;
-    rightHip.add(rightThigh);
-
-    const rightKnee = new THREE.Group();
-    rightKnee.position.set(0, -0.41, 0);
-    rightThigh.add(rightKnee);
-
-    const rightCalf = new THREE.Mesh(new THREE.CylinderGeometry(0.135, 0.115, 0.84, 16), cjJeansMat);
-    rightCalf.position.y = -0.42;
-    rightCalf.castShadow = true;
-    rightKnee.add(rightCalf);
-
-    const rightCuff = new THREE.Mesh(new THREE.CylinderGeometry(0.138, 0.142, 0.12, 12), cjJeansMat);
-    rightCuff.position.set(0, -0.38, 0);
-    rightCalf.add(rightCuff);
-
-    const rightAnkle = new THREE.Group();
-    rightAnkle.position.set(0, -0.42, 0);
-    rightCalf.add(rightAnkle);
-    rightAnkle.add(createShoeMesh());
-
-    return {
-      rig,
-      pelvis,
-      torso,
-      headGroup,
-      leftShoulder,
-      leftElbow,
-      rightShoulder,
-      rightElbow,
-      leftHip,
-      leftKnee,
-      leftAnkle,
-      rightHip,
-      rightKnee,
-      rightAnkle
-    };
-  }
-
-  // Active Runner Setup — CJ is the default!
-  let activeRunner = buildRunner('cj');
-  scene.add(activeRunner.rig);
+  // Chain Pendant
+  const pendant = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.08, 0.02), goldChainMat);
+  pendant.position.set(0, -0.06, 0.24);
+  collarMount.add(pendant);
 
   // Dynamic Contact Ground Shadow
-  const contactShadowGeo = new THREE.PlaneGeometry(1.4, 2.2);
+  const contactShadowGeo = new THREE.PlaneGeometry(1.9, 1.9);
   const contactShadowMat = new THREE.MeshBasicMaterial({
     map: shadowTex,
     transparent: true,
-    opacity: 0.65,
+    opacity: 0.7,
     depthWrite: false
   });
   const contactShadow = new THREE.Mesh(contactShadowGeo, contactShadowMat);
@@ -664,7 +474,7 @@
   scene.add(contactShadow);
 
   // ==============================================================================
-  // 4. WEB AUDIO SYNTHESIZER
+  // 4. WEB AUDIO SYNTHESIZER (ROLLING RUMBLE & BEAT)
   // ==============================================================================
   let audioCtx = null;
 
@@ -675,30 +485,30 @@
     } catch (e) {}
   }
 
-  function playFootstrikeSound() {
+  function playRollSound() {
     if (!state.audioEnabled || !audioCtx) return;
     try {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(85, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.08);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(75, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.1);
 
-      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start();
-      osc.stop(audioCtx.currentTime + 0.08);
+      osc.stop(audioCtx.currentTime + 0.1);
     } catch (e) {}
   }
 
   // ==============================================================================
-  // 5. ANIMATION & STRIDE LOOP
+  // 5. ANIMATION & ROLLING PHYSICS LOOP
   // ==============================================================================
   let lastTime = performance.now();
-  let footstrikeTriggered = false;
+  let soundTimer = 0;
 
   function animate(now) {
     requestAnimationFrame(animate);
@@ -713,64 +523,39 @@
     state.distanceKm += (speedMps * dt) / 1000;
     document.getElementById('metricDistance').innerHTML = `${state.distanceKm.toFixed(3)} <small>KM</small>`;
 
-    // Stride Frequency
-    const strideFreq = (profile.cadence / 60) * Math.PI * 2;
-    state.stridePhase += strideFreq * dt;
+    // Angular Velocity Physics: omega = v / R
+    const deltaTheta = (speedMps * dt) / ballRadius;
+    state.rollAngle += deltaTheta;
 
-    const phase = state.stridePhase;
-    const sinPhase = Math.sin(phase);
-    const cosPhase = Math.cos(phase);
+    // 1. Physically Roll the Sphere Body Forward around X-axis
+    ballMesh.rotation.x -= deltaTheta;
 
-    // 1. Center of Gravity Bounce & Lean
-    activeRunner.pelvis.position.y = 1.95 + Math.abs(cosPhase) * 0.075;
-    activeRunner.torso.rotation.x = 0.12 + Math.sin(phase * 2) * 0.015;
-    activeRunner.torso.rotation.y = -sinPhase * 0.14;
-    activeRunner.pelvis.rotation.y = sinPhase * 0.06;
-    activeRunner.pelvis.rotation.z = Math.sin(phase) * 0.035;
+    // Calculate RPM for Telemetry: RPM = (speedMps / (2 * pi * R)) * 60
+    const rpm = Math.round((speedMps / (2 * Math.PI * ballRadius)) * 60);
+    document.getElementById('metricRpm').innerHTML = `${rpm} <small>RPM</small>`;
 
-    activeRunner.headGroup.rotation.y = sinPhase * 0.05;
-    activeRunner.headGroup.rotation.x = -0.05;
+    // 2. Gyro Head Motion (Stabilized, Bobbing & Looking Around)
+    const time = now * 0.001;
+    // Gentle vertical bobbing with roll velocity
+    collarMount.position.y = (ballRadius * 2 - 0.02) + Math.sin(state.rollAngle * 2) * 0.035;
 
-    // 2. Leg Kinematics (High Heel Kick, Forward Drive)
-    activeRunner.leftHip.rotation.x = sinPhase * 0.72;
-    if (sinPhase < 0) {
-      activeRunner.leftKnee.rotation.x = Math.abs(sinPhase) * 1.85;
-      activeRunner.leftAnkle.rotation.x = -0.35;
-    } else {
-      activeRunner.leftKnee.rotation.x = Math.max(0.12, (1 - sinPhase) * 0.65);
-      activeRunner.leftAnkle.rotation.x = 0.22;
+    // Dynamic head tilt proportional to speed
+    headGroup.rotation.x = -0.06 - (speedMps / 40.0) * 0.12;
+    // Subtle curious head sway looking around Grove Street
+    headGroup.rotation.y = Math.sin(time * 1.5) * 0.14;
+    headGroup.rotation.z = Math.cos(time * 2.0) * 0.04;
+
+    // 3. Audio Trigger
+    soundTimer += dt;
+    if (soundTimer > 0.28) {
+      soundTimer = 0;
+      playRollSound();
     }
 
-    activeRunner.rightHip.rotation.x = -sinPhase * 0.72;
-    if (-sinPhase < 0) {
-      activeRunner.rightKnee.rotation.x = Math.abs(-sinPhase) * 1.85;
-      activeRunner.rightAnkle.rotation.x = -0.35;
-    } else {
-      activeRunner.rightKnee.rotation.x = Math.max(0.12, (1 - (-sinPhase)) * 0.65);
-      activeRunner.rightAnkle.rotation.x = 0.22;
-    }
-
-    // Dynamic Ground Contact Shadow
-    const shadowScale = 1 - Math.abs(cosPhase) * 0.2;
-    contactShadow.scale.set(shadowScale, shadowScale * 1.4, 1);
-    contactShadow.material.opacity = 0.65 - Math.abs(cosPhase) * 0.25;
-
-    // 3. Athletic Arm Swing
-    activeRunner.leftShoulder.rotation.x = -sinPhase * 0.68;
-    activeRunner.leftShoulder.rotation.y = -cosPhase * 0.12;
-    activeRunner.leftShoulder.rotation.z = -0.12;
-
-    activeRunner.rightShoulder.rotation.x = sinPhase * 0.68;
-    activeRunner.rightShoulder.rotation.y = cosPhase * 0.12;
-    activeRunner.rightShoulder.rotation.z = 0.12;
-
-    // 4. Audio Trigger
-    if (sinPhase > 0.94 && !footstrikeTriggered) {
-      playFootstrikeSound();
-      footstrikeTriggered = true;
-    } else if (sinPhase < 0.15 && footstrikeTriggered) {
-      footstrikeTriggered = false;
-    }
+    // 4. Ground Shadow follows Ball
+    contactShadow.position.y = 0.02;
+    const shadowPulsate = 1 - Math.abs(Math.sin(state.rollAngle * 2)) * 0.08;
+    contactShadow.scale.set(shadowPulsate, shadowPulsate, 1);
 
     // 5. Runway Scrolling
     const scrollStep = speedMps * dt * 2.5;
@@ -785,72 +570,66 @@
 
   function updateCamera(time) {
     if (state.cameraMode === 'broadcast') {
-      // Front (Face) View — directly facing CJ
-      camera.position.set(0, 2.2, 7.5);
-      camera.lookAt(0, 1.8, 0);
+      // Front View — directly facing the rolling ball & head!
+      camera.position.set(0, 2.2, 6.8);
+      camera.lookAt(0, 1.4, 0);
     } else if (state.cameraMode === 'chase') {
       // Behind View
-      camera.position.set(0, 2.7, -5.4);
-      camera.lookAt(0, 1.8, 3.5);
+      camera.position.set(0, 2.5, -5.2);
+      camera.lookAt(0, 1.4, 3.5);
     } else if (state.cameraMode === 'profile') {
-      // 90-degree lateral stride view
-      camera.position.set(-5.0, 1.9, 0.3);
-      camera.lookAt(0, 1.7, 0.2);
+      // 90-degree lateral view showing the ball spinning forward!
+      camera.position.set(-4.6, 1.6, 0.2);
+      camera.lookAt(0, 1.3, 0.2);
     } else if (state.cameraMode === 'closeup') {
-      // Close-up portrait focus on CJ's face and upper body
-      camera.position.set(0, 2.1, 2.5);
-      camera.lookAt(0, 2.05, 0);
-    } else if (state.cameraMode === 'cinematic') {
-      // Orbital drone
-      const angle = (time * 0.00035);
-      camera.position.set(Math.sin(angle) * 8.0, 3.0 + Math.cos(angle * 2) * 0.7, Math.cos(angle) * 8.0);
+      // Focused portrait framing the head atop the ball
+      camera.position.set(0, 2.0, 2.6);
       camera.lookAt(0, 1.8, 0);
+    } else if (state.cameraMode === 'cinematic') {
+      // 360-degree orbital sweep
+      const angle = (time * 0.00035);
+      camera.position.set(Math.sin(angle) * 7.5, 2.8 + Math.cos(angle * 2) * 0.6, Math.cos(angle) * 7.5);
+      camera.lookAt(0, 1.4, 0);
     }
   }
 
   // ==============================================================================
   // 6. INTERACTIVE CONTROLS
   // ==============================================================================
-  window.setRunner = function (runnerId) {
-    if (runnerId === state.currentRunner) return;
-    state.currentRunner = runnerId;
-
-    scene.remove(activeRunner.rig);
-    activeRunner = buildRunner(runnerId);
-    scene.add(activeRunner.rig);
-
-    document.querySelectorAll('[data-runner]').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[data-runner="${runnerId}"]`).classList.add('active');
-
-    // Update Brand Subtitle & Quote
-    const sub = document.querySelector('.brand-sub');
-    if (runnerId === 'cj') {
-      sub.innerHTML = 'CARL JOHNSON &bull; GROVE STREET STRIDE';
-      document.getElementById('quoteText').innerHTML = '&ldquo;Ah shit, here we go again.&rdquo;';
+  window.setHead = function (headId) {
+    state.currentHead = headId;
+    if (headId === 'cj') {
+      headMesh.material = cjFaceMat;
+      goldChain.visible = true;
+      pendant.visible = true;
+      document.querySelector('.brand-sub').innerHTML = 'ROLLING BALL WITH A HEAD &bull; CJ EDITION';
+      document.getElementById('quoteText').innerHTML = '&ldquo;Ah shit, here we roll again.&rdquo;';
       document.querySelector('.quote-author').innerHTML = '&mdash; Carl Johnson (CJ)';
     } else {
-      sub.innerHTML = 'ELIUD KIPCHOGE &bull; INEOS 1:59 STRIDE';
-      document.getElementById('quoteText').innerHTML = '&ldquo;No Human Is Limited.&rdquo;';
+      headMesh.material = kipchogeFaceMat;
+      goldChain.visible = false;
+      pendant.visible = false;
+      document.querySelector('.brand-sub').innerHTML = 'ROLLING BALL WITH A HEAD &bull; KIPCHOGE EDITION';
+      document.getElementById('quoteText').innerHTML = '&ldquo;No Human Is Limited &mdash; even rolling.&rdquo;';
       document.querySelector('.quote-author').innerHTML = '&mdash; Eliud Kipchoge';
     }
+
+    document.querySelectorAll('[data-head]').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-head="${headId}"]`).classList.add('active');
   };
 
-  window.setTheme = function (themeId) {
-    const t = THEMES[themeId];
-    if (!t) return;
-    state.currentTheme = themeId;
+  window.setBallSkin = function (ballId) {
+    state.currentBall = ballId;
+    if (ballId === 'eightball') {
+      ballMesh.material = eightBallMat;
+    } else if (ballId === 'cyber') {
+      ballMesh.material = cyberGridMat;
+    } else if (ballId === 'gold') {
+      ballMesh.material = goldChromeMat;
+    }
 
-    scene.background.setHex(t.bg);
-    scene.fog.color.setHex(t.fog);
-    roadMat.color.setHex(t.road);
-    groundMat.color.setHex(t.ground);
-    laserMat.color.setHex(t.laser);
-    ambientLight.color.setHex(t.ambient);
-    sunLight.color.setHex(t.sun);
-    rimLight.color.setHex(t.rim);
-
-    document.querySelectorAll('[data-theme]').forEach(btn => btn.classList.remove('active'));
-    document.querySelector(`[data-theme="${themeId}"]`).classList.add('active');
+    document.querySelectorAll('[data-ball]').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`[data-ball="${ballId}"]`).classList.add('active');
   };
 
   window.setCameraMode = function (modeId) {
@@ -865,7 +644,6 @@
     state.currentPace = paceId;
 
     document.getElementById('metricSpeed').innerHTML = `${p.label} <small>KM/H</small>`;
-    document.getElementById('metricStamina').innerHTML = `${p.stamina}`;
 
     document.querySelectorAll('[data-pace]').forEach(btn => btn.classList.remove('active'));
     document.querySelector(`[data-pace="${paceId}"]`).classList.add('active');
@@ -882,12 +660,12 @@
 
   // Quotation Carousel
   setInterval(() => {
-    state.quoteIdx = (state.quoteIdx + 1) % CJ_QUOTES.length;
+    state.quoteIdx = (state.quoteIdx + 1) % ROLLING_QUOTES.length;
     const qEl = document.getElementById('quoteText');
     qEl.style.opacity = 0;
     setTimeout(() => {
-      if (state.currentRunner === 'cj') {
-        qEl.innerHTML = `&ldquo;${CJ_QUOTES[state.quoteIdx]}&rdquo;`;
+      if (state.currentHead === 'cj') {
+        qEl.innerHTML = `&ldquo;${ROLLING_QUOTES[state.quoteIdx]}&rdquo;`;
         document.querySelector('.quote-author').innerHTML = '&mdash; Carl Johnson (CJ)';
       }
       qEl.style.opacity = 1;
