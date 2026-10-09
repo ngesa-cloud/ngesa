@@ -1,0 +1,162 @@
+/* ==============================================================================
+   NGESA // THE IMMORTAL STRIDE — HIGH-PERFORMANCE DESIGN SYSTEM
+   Theme: INEOS 1:59 Athletic Performance & Cyber-Endurance
+   ============================================================================== */
+
+:root {
+  --bg: #080b12;
+  --card-bg: rgba(13, 19, 32, 0.82);
+  --border: rgba(56, 189, 248, 0.2);
+  --accent-green: #10b981;
+  --accent-green-glow: rgba(16, 185, 129, 0.45);
+  --accent-laser: #00ff66;
+  --accent-laser-glow: rgba(0, 255, 102, 0.6);
+  --accent-orange: #f97316;
+  --accent-cyan: #38bdf8;
+  --accent-purple: #a855f7;
+
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body, html {
+  width: 100%; height: 100%; overflow: hidden;
+  background: var(--bg); color: var(--text);
+  font-family: var(--font-sans); user-select: none;
+}
+
+#canvas-container {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%; z-index: 1;
+}
+
+/* ── HUD Overlay ─────────────────────────────────────────────────── */
+.hud {
+  position: absolute; inset: 0; z-index: 10;
+  pointer-events: none; display: flex; flex-direction: column;
+  justify-content: space-between; padding: 1.5rem;
+}
+
+/* ── Topbar ───────────────────────────────────────────────────────── */
+.topbar {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  pointer-events: auto; flex-wrap: wrap; gap: 1rem;
+}
+
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card-bg); backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 0.75rem 1.25rem; border-radius: 0.75rem;
+  border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+.brand-badge {
+  background: linear-gradient(135deg, #059669, #10b981);
+  color: #fff; font-size: 0.75rem; font-weight: 800;
+  padding: 0.3rem 0.65rem; border-radius: 0.4rem;
+  letter-spacing: 0.05em; font-family: var(--font-mono);
+  box-shadow: 0 0 15px var(--accent-green-glow);
+}
+
+.brand-text { display: flex; flex-direction: column; }
+.brand-title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; color: #fff; }
+.brand-title em { font-style: normal; color: var(--accent-green); }
+.brand-sub { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+/* ── Telemetry Bar ───────────────────────────────────────────────── */
+.telemetry-bar {
+  display: flex; gap: 0.75rem; flex-wrap: wrap;
+}
+
+.metric-card {
+  background: var(--card-bg); backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 0.6rem 1rem; border-radius: 0.65rem;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; min-width: 120px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.metric-label {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.04em;
+}
+
+.metric-val {
+  font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono);
+  color: var(--accent-cyan);
+}
+.metric-val small { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
+
+.metric-val.heart-beat {
+  color: #ef4444; animation: heartPulse 0.72s infinite ease-in-out;
+}
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); text-shadow: 0 0 12px rgba(239, 68, 68, 0.6); }
+}
+
+.top-actions {
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+.action-btn {
+  background: var(--card-bg); backdrop-filter: blur(14px);
+  border: 1px solid var(--border); padding: 0.65rem 1.1rem;
+  border-radius: 0.65rem; color: var(--text); font-size: 0.8rem;
+  font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
+  transition: all 0.2s;
+}
+.action-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-cyan); }
+
+/* ── Quote Banner ────────────────────────────────────────────────── */
+.quote-container {
+  align-self: center; text-align: center; max-width: 720px;
+  background: rgba(8, 11, 18, 0.75); backdrop-filter: blur(10px);
+  padding: 0.75rem 1.75rem; border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: auto; transition: opacity 0.5s;
+}
+
+.quote-text {
+  font-size: 1.15rem; font-weight: 700; font-style: italic;
+  color: #f1faee; letter-spacing: -0.01em;
+}
+
+.quote-author {
+  font-size: 0.75rem; color: var(--accent-green);
+  font-family: var(--font-mono); font-weight: 600; margin-top: 2px;
+}
+
+/* ── Bottom Control Dock ─────────────────────────────────────────── */
+.bottom-dock {
+  background: var(--card-bg); backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: 1rem;
+  padding: 1rem 1.5rem; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 1.25rem;
+  pointer-events: auto; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+}
+
+.dock-section { display: flex; flex-direction: column; gap: 0.4rem; }
+.dock-label {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.05em;
+}
+
+.dock-buttons { display: flex; gap: 0.4rem; }
+.dock-btn {
+  background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.45rem 0.85rem; border-radius: 0.45rem; color: #cbd5e1;
+  font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+.dock-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-cyan); color: #fff; }
+.dock-btn.active {
+  background: var(--accent-green); border-color: var(--accent-green);
+  color: #042f2e; box-shadow: 0 0 15px var(--accent-green-glow);
+}
