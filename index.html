@@ -5,11 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#04060a">
-  <title>NGESA // The Immortal Stride &mdash; CJ (San Andreas)</title>
-  <meta name="description" content="A minimalist, infinite 3D runner simulation featuring Carl Johnson (CJ) running infinitely with max stamina down the endless road.">
+  <title>NGESA // Carl Johnson (CJ) &mdash; San Andreas Stride</title>
+  <meta name="description" content="Infinite 3D runner simulation of Carl Johnson (CJ) running infinitely with MAX stamina in his iconic white tank and blue jeans.">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=cj_live_v2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2322c55e%22/><text y=%2266%22 x=%2250%22 font-size=%2244%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23000%22>CJ</text></svg>">
+  
+  <!-- Automatic Cache Purge Script -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for (let r of registrations) { r.unregister(); }
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+    }
+  </script>
+
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -79,12 +92,12 @@
 
       <div class="dock-sep"></div>
 
-      <!-- Camera Angles -->
+      <!-- Camera Angles (Default Front View) -->
       <div class="control-group">
         <span class="group-label">CAMERA</span>
         <div class="pill-buttons">
-          <button class="pill-btn active" data-cam="chase" onclick="setCameraMode('chase')">Chase</button>
-          <button class="pill-btn" data-cam="broadcast" onclick="setCameraMode('broadcast')">Front</button>
+          <button class="pill-btn active" data-cam="broadcast" onclick="setCameraMode('broadcast')">Front (Face)</button>
+          <button class="pill-btn" data-cam="chase" onclick="setCameraMode('chase')">Behind</button>
           <button class="pill-btn" data-cam="profile" onclick="setCameraMode('profile')">Profile</button>
           <button class="pill-btn" data-cam="closeup" onclick="setCameraMode('closeup')">Focus</button>
           <button class="pill-btn" data-cam="cinematic" onclick="setCameraMode('cinematic')">Orbit</button>
@@ -118,6 +131,6 @@
 
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=cj_live_v2"></script>
 </body>
 </html>
