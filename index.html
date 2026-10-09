@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#080b12">
-  <title>NGESA // The Immortal Stride &mdash; Kipchoge Clone Simulation</title>
-  <meta name="description" content="An infinite procedural marathon simulation of the immortal Kipchoge clone that never stops running. Sub-2 hour pacing, aerodynamic drafting physics, and biometrics.">
+  <meta name="theme-color" content="#05070d">
+  <title>NGESA // The Immortal Stride &mdash; Kipchoge Solo Simulation</title>
+  <meta name="description" content="A minimalist, infinite 3D marathon simulation of the immortal Kipchoge clone running solo against infinity. Sub-2 hour pacing, procedural kinematics, and pure minimalist design.">
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2310b981%22/><text y=%2266%22 x=%2250%22 font-size=%2246%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22white%22>1:59</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%2300ff66%22/><text y=%2266%22 x=%2250%22 font-size=%2244%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23000%22>1:59</text></svg>">
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
@@ -18,107 +18,91 @@
   <!-- WebGL 3D Simulation Canvas Container -->
   <div id="canvas-container"></div>
 
-  <!-- INEOS 1:59 Laser Pace Overlay -->
-  <div class="laser-beam-indicator" id="laserBeamIndicator"></div>
-
-  <!-- HUD Overlay -->
-  <div class="hud">
-    <!-- Top Navigation & Live Telemetry -->
+  <!-- Minimalist HUD Overlay -->
+  <main class="hud">
+    
+    <!-- Top Minimalist Bar: Brand & Telemetry -->
     <header class="topbar">
       <div class="brand">
-        <div class="brand-badge">INEOS 1:59</div>
-        <div class="brand-text">
-          <span class="brand-title">NGESA <em>// IMMORTAL STRIDE</em></span>
-          <span class="brand-sub">Eliud Kipchoge Clone &bull; Continuous Biometric Simulation</span>
+        <span class="brand-title">NGESA</span>
+        <span class="brand-sub">THE IMMORTAL STRIDE &bull; 1:59</span>
+      </div>
+
+      <!-- Minimalist Inline Telemetry Stream -->
+      <div class="telemetry">
+        <div class="stat">
+          <span class="stat-label">DIST</span>
+          <span class="stat-val highlight" id="metricDistance">0.000 <small>KM</small></span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+          <span class="stat-label">PACE</span>
+          <span class="stat-val" id="metricPace">2:50 <small>/KM</small></span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+          <span class="stat-label">CADENCE</span>
+          <span class="stat-val" id="metricCadence">188 <small>SPM</small></span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+          <span class="stat-label">HEART</span>
+          <span class="stat-val pulse" id="metricHeartRate">168 <small>BPM</small></span>
         </div>
       </div>
 
-      <!-- Real-Time Kipchoge Biometric Meters -->
-      <div class="telemetry-bar">
-        <div class="metric-card">
-          <span class="metric-label">Elapsed Distance</span>
-          <span class="metric-val" id="metricDistance">0.000 <small>KM</small></span>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-label">Target Pace</span>
-          <span class="metric-val" id="metricPace">2:50 <small>/KM</small></span>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-label">Cadence</span>
-          <span class="metric-val" id="metricCadence">188 <small>SPM</small></span>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-label">Heart Rate</span>
-          <span class="metric-val heart-beat" id="metricHeartRate">168 <small>BPM</small></span>
-        </div>
-
-        <div class="metric-card">
-          <span class="metric-label">Drag Shield</span>
-          <span class="metric-val" style="color:var(--accent-green)" id="metricDrag">-85.4%</span>
-        </div>
-      </div>
-
-      <!-- Audio & Sound Toggle -->
-      <div class="top-actions">
-        <button class="action-btn" id="audioToggleBtn" type="button" title="Toggle Cadence Metronome & Atmospheric Audio">
+      <!-- Sound Toggle -->
+      <div class="top-controls">
+        <button class="sound-pill" id="audioToggleBtn" type="button" aria-label="Toggle Metronome Sound">
           <span id="audioIcon">🔇</span>
-          <span id="audioText">Sound: Off</span>
+          <span id="audioText">MUTE</span>
         </button>
       </div>
     </header>
 
-    <!-- Center Floating Quotation Banner -->
-    <div class="quote-container">
-      <div class="quote-text" id="quoteText">&ldquo;No Human Is Limited.&rdquo;</div>
-      <div class="quote-author">&mdash; Eliud Kipchoge, World Marathon Record Holder</div>
+    <!-- Center Floating Minimalist Quotation -->
+    <div class="quote-area">
+      <p class="quote-text" id="quoteText">&ldquo;No Human Is Limited.&rdquo;</p>
+      <span class="quote-author">&mdash; Eliud Kipchoge</span>
     </div>
 
-    <!-- Bottom Control Dock -->
+    <!-- Bottom Minimalist Controls Dock -->
     <footer class="bottom-dock">
-      <!-- Biome & Environment Selector -->
-      <div class="dock-section">
-        <span class="dock-label">Running Environment</span>
-        <div class="dock-buttons">
-          <button class="dock-btn active" data-biome="vienna" onclick="setBiome('vienna')">🌳 Vienna Prater</button>
-          <button class="dock-btn" data-biome="kaptagat" onclick="setBiome('kaptagat')">🏃 Kaptagat Trail</button>
-          <button class="dock-btn" data-biome="cyber" onclick="setBiome('cyber')">⚡ Cyber Void</button>
+      <div class="control-group">
+        <span class="group-label">CAMERA</span>
+        <div class="pill-buttons">
+          <button class="pill-btn active" data-cam="chase" onclick="setCameraMode('chase')">Chase</button>
+          <button class="pill-btn" data-cam="broadcast" onclick="setCameraMode('broadcast')">Front</button>
+          <button class="pill-btn" data-cam="profile" onclick="setCameraMode('profile')">Profile</button>
+          <button class="pill-btn" data-cam="closeup" onclick="setCameraMode('closeup')">Focus</button>
+          <button class="pill-btn" data-cam="cinematic" onclick="setCameraMode('cinematic')">Orbit</button>
         </div>
       </div>
 
-      <!-- Camera Perspectives -->
-      <div class="dock-section">
-        <span class="dock-label">Camera Angle</span>
-        <div class="dock-buttons">
-          <button class="dock-btn active" data-cam="chase" onclick="setCameraMode('chase')">🎥 Pacer Cam</button>
-          <button class="dock-btn" data-cam="broadcast" onclick="setCameraMode('broadcast')">🚗 Lead Vehicle</button>
-          <button class="dock-btn" data-cam="profile" onclick="setCameraMode('profile')">📐 Side Profile</button>
-          <button class="dock-btn" data-cam="closeup" onclick="setCameraMode('closeup')">🔍 Close-Up</button>
-          <button class="dock-btn" data-cam="cinematic" onclick="setCameraMode('cinematic')">🚁 Drone Orbit</button>
+      <div class="dock-sep"></div>
+
+      <div class="control-group">
+        <span class="group-label">PACE</span>
+        <div class="pill-buttons">
+          <button class="pill-btn active" data-pace="sub2" onclick="setPacingMode('sub2')">2:50</button>
+          <button class="pill-btn" data-pace="berlin" onclick="setPacingMode('berlin')">2:52</button>
+          <button class="pill-btn" data-pace="hypersonic" onclick="setPacingMode('hypersonic')">1:30</button>
         </div>
       </div>
 
-      <!-- Pacing Gears -->
-      <div class="dock-section">
-        <span class="dock-label">Marathon Pace</span>
-        <div class="dock-buttons">
-          <button class="dock-btn active" data-pace="sub2" onclick="setPacingMode('sub2')">⏱️ Sub-2 (2:50/km)</button>
-          <button class="dock-btn" data-pace="berlin" onclick="setPacingMode('berlin')">🥇 WR (2:52/km)</button>
-          <button class="dock-btn" data-pace="hypersonic" onclick="setPacingMode('hypersonic')">🚀 Warp (1:30/km)</button>
-        </div>
-      </div>
+      <div class="dock-sep"></div>
 
-      <!-- Drafting Shield Toggle -->
-      <div class="dock-section">
-        <span class="dock-label">CFD Drafting Formation</span>
-        <div class="dock-buttons">
-          <button class="dock-btn active" id="draftingBtn" onclick="toggleDrafting()">🛡️ Inverted Arrow</button>
+      <div class="control-group">
+        <span class="group-label">THEME</span>
+        <div class="pill-buttons">
+          <button class="pill-btn active" data-biome="vienna" onclick="setBiome('vienna')">Obsidian</button>
+          <button class="pill-btn" data-biome="cyber" onclick="setBiome('cyber')">Monochrome</button>
+          <button class="pill-btn" data-biome="kaptagat" onclick="setBiome('kaptagat')">Dawn</button>
         </div>
       </div>
     </footer>
-  </div>
+
+  </main>
 
   <script src="app.js"></script>
 </body>

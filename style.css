@@ -1,162 +1,311 @@
 /* ==============================================================================
-   NGESA // THE IMMORTAL STRIDE — HIGH-PERFORMANCE DESIGN SYSTEM
-   Theme: INEOS 1:59 Athletic Performance & Cyber-Endurance
+   NGESA // THE IMMORTAL STRIDE — ULTRA-MINIMALIST DESIGN SYSTEM
+   Clean, typographic, distraction-free aesthetic for the solo Kipchoge simulation
    ============================================================================== */
 
 :root {
-  --bg: #080b12;
-  --card-bg: rgba(13, 19, 32, 0.82);
-  --border: rgba(56, 189, 248, 0.2);
-  --accent-green: #10b981;
-  --accent-green-glow: rgba(16, 185, 129, 0.45);
+  --bg: #04060a;
+  --panel-bg: rgba(9, 12, 18, 0.65);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(0, 255, 102, 0.4);
   --accent-laser: #00ff66;
-  --accent-laser-glow: rgba(0, 255, 102, 0.6);
-  --accent-orange: #f97316;
-  --accent-cyan: #38bdf8;
-  --accent-purple: #a855f7;
-
-  --text: #f8fafc;
-  --text-muted: #94a3b8;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --accent-glow: rgba(0, 255, 102, 0.25);
+  --text-main: #f8fafc;
+  --text-muted: #64748b;
+  --text-dim: #94a3b8;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', ui-monospace, monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, sans-serif;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body, html {
-  width: 100%; height: 100%; overflow: hidden;
-  background: var(--bg); color: var(--text);
-  font-family: var(--font-sans); user-select: none;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  user-select: none;
 }
 
 #canvas-container {
-  position: absolute; top: 0; left: 0;
-  width: 100%; height: 100%; z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
-/* ── HUD Overlay ─────────────────────────────────────────────────── */
+/* ── HUD Main Overlay ─────────────────────────────────────────────── */
 .hud {
-  position: absolute; inset: 0; z-index: 10;
-  pointer-events: none; display: flex; flex-direction: column;
-  justify-content: space-between; padding: 1.5rem;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 32px;
 }
 
-/* ── Topbar ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hud {
+    padding: 16px;
+  }
+}
+
+/* ── Topbar (Brand, Inline Telemetry, Sound) ─────────────────────── */
 .topbar {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  pointer-events: auto; flex-wrap: wrap; gap: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: auto;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .brand {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--card-bg); backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  padding: 0.75rem 1.25rem; border-radius: 0.75rem;
-  border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.brand-badge {
-  background: linear-gradient(135deg, #059669, #10b981);
-  color: #fff; font-size: 0.75rem; font-weight: 800;
-  padding: 0.3rem 0.65rem; border-radius: 0.4rem;
-  letter-spacing: 0.05em; font-family: var(--font-mono);
-  box-shadow: 0 0 15px var(--accent-green-glow);
+.brand-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.35em;
+  color: var(--text-main);
+  text-transform: uppercase;
 }
 
-.brand-text { display: flex; flex-direction: column; }
-.brand-title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; color: #fff; }
-.brand-title em { font-style: normal; color: var(--accent-green); }
-.brand-sub { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); }
-
-/* ── Telemetry Bar ───────────────────────────────────────────────── */
-.telemetry-bar {
-  display: flex; gap: 0.75rem; flex-wrap: wrap;
+.brand-sub {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
-.metric-card {
-  background: var(--card-bg); backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  padding: 0.6rem 1rem; border-radius: 0.65rem;
+/* Inline Minimalist Telemetry */
+.telemetry {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 8px 20px;
+  border-radius: 9999px;
   border: 1px solid var(--border);
-  display: flex; flex-direction: column; min-width: 120px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
-.metric-label {
-  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-  color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.04em;
+.stat {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-mono);
 }
 
-.metric-val {
-  font-size: 1.25rem; font-weight: 800; font-family: var(--font-mono);
-  color: var(--accent-cyan);
-}
-.metric-val small { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; }
-
-.metric-val.heart-beat {
-  color: #ef4444; animation: heartPulse 0.72s infinite ease-in-out;
-}
-@keyframes heartPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08); text-shadow: 0 0 12px rgba(239, 68, 68, 0.6); }
+.stat-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
-.top-actions {
-  display: flex; align-items: center; gap: 0.5rem;
+.stat-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-main);
 }
 
-.action-btn {
-  background: var(--card-bg); backdrop-filter: blur(14px);
-  border: 1px solid var(--border); padding: 0.65rem 1.1rem;
-  border-radius: 0.65rem; color: var(--text); font-size: 0.8rem;
-  font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;
-  transition: all 0.2s;
+.stat-val small {
+  font-size: 9px;
+  color: var(--text-muted);
+  font-weight: 500;
 }
-.action-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-cyan); }
 
-/* ── Quote Banner ────────────────────────────────────────────────── */
-.quote-container {
-  align-self: center; text-align: center; max-width: 720px;
-  background: rgba(8, 11, 18, 0.75); backdrop-filter: blur(10px);
-  padding: 0.75rem 1.75rem; border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  pointer-events: auto; transition: opacity 0.5s;
+.stat-val.highlight {
+  color: var(--accent-laser);
+}
+
+.stat-val.pulse {
+  color: #ef4444;
+  animation: pulseBeat 0.72s infinite ease-in-out;
+}
+
+@keyframes pulseBeat {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border);
+}
+
+/* Top Controls (Mute Button) */
+.sound-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 9999px;
+  color: var(--text-dim);
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sound-pill:hover {
+  color: var(--text-main);
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Center Floating Quotation ────────────────────────────────────── */
+.quote-area {
+  align-self: center;
+  text-align: center;
+  max-width: 620px;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .quote-text {
-  font-size: 1.15rem; font-weight: 700; font-style: italic;
-  color: #f1faee; letter-spacing: -0.01em;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(248, 250, 252, 0.85);
+  font-style: italic;
+  line-height: 1.6;
+  transition: opacity 0.5s ease;
 }
 
 .quote-author {
-  font-size: 0.75rem; color: var(--accent-green);
-  font-family: var(--font-mono); font-weight: 600; margin-top: 2px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--accent-laser);
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
-/* ── Bottom Control Dock ─────────────────────────────────────────── */
+/* ── Bottom Minimalist Dock ───────────────────────────────────────── */
 .bottom-dock {
-  background: var(--card-bg); backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border); border-radius: 1rem;
-  padding: 1rem 1.5rem; display: flex; justify-content: space-between;
-  align-items: center; flex-wrap: wrap; gap: 1.25rem;
-  pointer-events: auto; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+  align-self: center;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  padding: 8px 18px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.dock-section { display: flex; flex-direction: column; gap: 0.4rem; }
-.dock-label {
-  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-  color: var(--text-muted); font-family: var(--font-mono); letter-spacing: 0.05em;
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.dock-buttons { display: flex; gap: 0.4rem; }
-.dock-btn {
-  background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.45rem 0.85rem; border-radius: 0.45rem; color: #cbd5e1;
-  font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
-  font-family: var(--font-sans);
+.group-label {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
-.dock-btn:hover { background: rgba(56, 189, 248, 0.15); border-color: var(--accent-cyan); color: #fff; }
-.dock-btn.active {
-  background: var(--accent-green); border-color: var(--accent-green);
-  color: #042f2e; box-shadow: 0 0 15px var(--accent-green-glow);
+
+.pill-buttons {
+  display: flex;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.pill-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.pill-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.pill-btn.active {
+  background: var(--accent-laser);
+  color: #030a05;
+  font-weight: 700;
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+.dock-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .topbar {
+    justify-content: center;
+    gap: 12px;
+  }
+  .telemetry {
+    order: 3;
+    width: 100%;
+    justify-content: space-around;
+    padding: 8px 12px;
+  }
+  .bottom-dock {
+    border-radius: 18px;
+    gap: 10px;
+    padding: 10px 14px;
+    max-width: 95vw;
+  }
+  .dock-sep {
+    display: none;
+  }
+  .quote-area {
+    display: none;
+  }
 }
