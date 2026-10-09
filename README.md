@@ -1,44 +1,45 @@
-# NGESA // The Immortal Stride 🏃💨
+# NGESA // The Immortal Stride &mdash; CJ (San Andreas) 🏃💨
 
-> **"No Human is Limited."** &mdash; Eliud Kipchoge
+> **"Ah shit, here we go again."** &mdash; Carl Johnson (CJ)
 
-An ultra-minimalist, infinite 3D marathon simulation of **Eliud Kipchoge** running solo into eternity. Built with procedural Three.js kinematics, PBR perspiration shaders, authentic Nike Alphafly NEXT% racing shoes, and an ethereal, distraction-free aesthetic.
+An ultra-minimalist, infinite 3D runner simulation featuring **Carl Johnson (CJ)** from GTA San Andreas running infinitely with MAX stamina down an endless reflective runway. Built with procedural Three.js kinematics, authentic San Andreas textures (white ribbed tank top, baggy denim jeans, black canvas sneakers, gold chain, and buzzcut fade), and real-time telemetry.
 
 [![Deploy to GitHub Pages](https://github.com/ngesa-cloud/ngesa/actions/workflows/deploy.yml/badge.svg)](https://github.com/ngesa-cloud/ngesa/actions/workflows/deploy.yml)
-[![Live Demo](https://img.shields.io/badge/Demo-Live%20Simulation-00ff66?style=flat&logo=safari)](https://ngesa-cloud.github.io/ngesa/)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Simulation-22c55e?style=flat&logo=safari)](https://ngesa-cloud.github.io/ngesa/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ---
 
-## ⚡ Minimalist Design & Solo Runner Engine
+## ⚡ Simulation Features
 
-**NGESA** distills distance running to its purest, most hypnotic essence: a solitary human pushing the boundary of mortal capability against an endless horizon.
+1. **Carl Johnson (CJ) Procedural 3D Rig:**
+   - **Top:** Iconic white ribbed sleeveless athletic tank top ("wifebeater").
+   - **Jeans:** Classic baggy stonewash indigo blue denim jeans with leather belt, brass buckle, and gold topstitching.
+   - **Footwear:** Black canvas low-top skate sneakers with vulcanized white rubber toe bumpers.
+   - **Jewelry & Accessories:** Gold curb Cuban chain around his neck and black digital watch on left wrist.
+   - **Head & Face:** 1992 San Andreas buzzcut fade haircut, defined jawline, and subtle mustache/goatee stubble.
+   - **Character Switcher:** Toggle freely between **CJ** and **Kipchoge** on the fly!
 
-1. **Solo Hero Runner:**
-   - Single runner: Eliud Kipchoge running in sublime isolation.
-   - Sculpted anatomical human geometry: Pectorals, ribcage, deltoid caps, vastus medialis teardrop quadriceps, and high-insertion Kalenjin gastrocnemius calf muscle.
-   - Authentic Nike Air Zoom Alphafly NEXT% footwear: High-stack ZoomX curved foam midsole, aerodynamic heel wedge fin, dual pressurized neon green Air Zoom pods, and carbon-fiber Flyplate ribbon.
-   - Authentic INEOS 1:59 racing singlet with micro-mesh texture and race bib #1:59 "ELIUD".
-   - Left wrist Garmin GPS smartwatch displaying live pace and heart rate. Right wrist Kenyan national flag silicone bracelet.
-   - PBR clearcoat perspiration shaders with natural melanin tones glistening under studio lighting.
+2. **San Andreas Minimalist Road & Void:**
+   - Sleek dark reflective runway with razor-thin hairline edge guidelines and dashed centerline.
+   - Luminous green Grove Street laser guideline slicing through the dark.
+   - Curated Minimalist Palettes:
+     - **Grove Street:** Deep obsidian black with vibrant Grove Street green laser guide (`#00ff66`).
+     - **San Fierro:** Ocean mist slate blue with cool morning fill (`#38bdf8`).
+     - **Vinewood:** Twilight Los Santos amber sunset gradient (`#f97316`).
 
-2. **Minimalist Atmospheric Void & Runway:**
-   - Reflective dark runway with subtle hairline edge guides.
-   - Pure, razor-sharp INEOS green laser pace line projected onto the tarmac.
-   - Ethereal horizon fading gently into pure obsidian black.
-   - Museum-grade three-point sculptural lighting (key sunlight, sky fill, rim backlight).
+3. **San Andreas Telemetry HUD:**
+   - Real-time **DISTANCE** counter incrementing infinitely.
+   - Dynamic **SPEED** gauge (`12.0 KM/H`, `21.2 KM/H`, `40.0 KM/H`).
+   - **STAMINA: MAX 100%** & **RESPECT: + GROVE**.
+   - Iconic dialogue carousel ("Ah shit, here we go again.", "Grove Street. Home.", "All we had to do was follow the damn train, CJ!").
 
-3. **Curated Minimalist Palettes:**
-   - **Obsidian Void:** Pure midnight black with emerald green laser guide.
-   - **Monochrome Studio:** Stark architectural grayscale and chalk-white lines.
-   - **Nordic Dawn:** Midnight indigo with a serene morning twilight horizon.
-
-4. **Distraction-Free Typographic HUD:**
-   - Clean, inline monospace telemetry: Distance (KM), Target Pace (2:50/KM), Cadence (188 SPM), and Heart Rate (168 BPM).
-   - Floating pill dock with quick camera transitions: Chase, Front, Side Profile, Upper-body Focus, and Orbital Drone.
-
-5. **Generative Web Audio Synthesizer:**
-   - Procedural footstrike audio synthesized via the Web Audio API synchronized with each foot contact.
+4. **Dynamic Perspectives:**
+   - **Chase:** Third-person trailing behind CJ.
+   - **Front:** Head-on broadcast view.
+   - **Profile:** 90-degree lateral stride analysis.
+   - **Focus:** Close-up portrait view of CJ's face and upper body.
+   - **Orbit:** 360-degree cinematic orbital drone.
 
 ---
 
@@ -49,8 +50,6 @@ Experience the simulation directly in any modern browser:
 👉 **[https://ngesa-cloud.github.io/ngesa/](https://ngesa-cloud.github.io/ngesa/)**
 
 ### Local Setup
-Clone the repository and run with any static HTTP server:
-
 ```bash
 # Clone repository
 git clone https://github.com/ngesa-cloud/ngesa.git
@@ -69,10 +68,10 @@ Open `http://localhost:8080` in your browser.
 ## 🛠️ Tech Stack
 
 - **Graphics:** [Three.js](https://threejs.org/) (WebGL 3D Rendering)
-- **Audio:** Web Audio API (Procedural sound synthesis)
+- **Audio:** Web Audio API (Synthesized footstrikes)
 - **Styling:** Minimalist CSS3 (Glassmorphic pill HUD, typographic layout)
 - **Deployment:** GitHub Pages & GitHub Actions CI/CD
-- **PWA:** Service Worker caching & Manifest
+- **PWA:** Service Worker caching & Web App Manifest
 
 ---
 

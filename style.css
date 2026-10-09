@@ -138,6 +138,16 @@ html, body {
   color: var(--accent-laser);
 }
 
+.stat-val.stamina-max {
+  color: #38bdf8;
+  letter-spacing: 0.05em;
+}
+
+.stat-val.respect-stat {
+  color: #22c55e;
+  font-weight: 800;
+}
+
 .stat-val.pulse {
   color: #ef4444;
   animation: pulseBeat 0.72s infinite ease-in-out;
