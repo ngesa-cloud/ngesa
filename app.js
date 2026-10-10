@@ -848,8 +848,8 @@
   function updateCamera(time) {
     if (state.cameraMode === 'chase') {
       // Chase View — Behind the ball, looking forward at oncoming archways!
-      camera.position.set(0, 2.3, -5.4);
-      camera.lookAt(0, 1.8, 18.0);
+      camera.position.set(0, 2.7, -6.4);
+      camera.lookAt(0, 2.2, 26.0);
     } else if (state.cameraMode === 'broadcast') {
       // Front View — Facing CJ's head
       camera.position.set(0, 2.2, 6.8);
