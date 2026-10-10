@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="dark">
   <meta name="theme-color" content="#04060a">
-  <title>NGESA // Rolling Ball With A Head</title>
-  <meta name="description" content="A minimalist, infinite 3D simulation of an immortal rolling ball with Carl Johnson's head perched on top, rolling endlessly down the road.">
+  <title>NGESA // GitHub 100k+ Stars Highway</title>
+  <meta name="description" content="An immortal 3D journey through every GitHub repository with over 100,000 stars. Featuring CJ on a rolling 8-ball gliding down the open-source highway.">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css?v=ball_v1">
+  <link rel="stylesheet" href="style.css?v=gh100k_v2">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%2322c55e%22/><circle cx=%2250%22 cy=%2250%22 r=%2222%22 fill=%22white%22/><text y=%2258%22 x=%2250%22 font-size=%2224%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22black%22>8</text></svg>">
   
   <!-- Automatic Cache Purge Script -->
@@ -38,7 +38,7 @@
     <header class="topbar">
       <div class="brand">
         <span class="brand-title">NGESA</span>
-        <span class="brand-sub">ROLLING BALL WITH A HEAD &bull; CJ EDITION</span>
+        <span class="brand-sub">GITHUB 100K+ STARS HIGHWAY &bull; 60 LEGENDARY REPOSITORIES</span>
       </div>
 
       <!-- Minimalist Inline Telemetry Stream -->
@@ -50,28 +50,57 @@
         <div class="divider"></div>
         <div class="stat">
           <span class="stat-label">SPEED</span>
-          <span class="stat-val" id="metricSpeed">21.2 <small>KM/H</small></span>
+          <span class="stat-val" id="metricSpeed">30.0 <small>KM/H</small></span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+          <span class="stat-label">REPOS</span>
+          <span class="stat-val respect-stat" id="metricRepos">0 <small>/ 60</small></span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat">
+          <span class="stat-label">STARS</span>
+          <span class="stat-val star-gold" id="metricStars">0.0M <small>★</small></span>
         </div>
         <div class="divider"></div>
         <div class="stat">
           <span class="stat-label">ROLL</span>
-          <span class="stat-val stamina-max" id="metricRpm">375 <small>RPM</small></span>
-        </div>
-        <div class="divider"></div>
-        <div class="stat">
-          <span class="stat-label">MODE</span>
-          <span class="stat-val respect-stat" id="metricMode">BALL+HEAD</span>
+          <span class="stat-val stamina-max" id="metricRpm">560 <small>RPM</small></span>
         </div>
       </div>
 
-      <!-- Sound Toggle -->
+      <!-- Sound & Radar Toggle -->
       <div class="top-controls">
+        <button class="sound-pill" id="allReposTopBtn" type="button" onclick="openRepoModal()" aria-label="Open Repository Directory">
+          <span>🌟</span>
+          <span>REPOS (60)</span>
+        </button>
         <button class="sound-pill" id="audioToggleBtn" type="button" aria-label="Toggle Sound Effects">
           <span id="audioIcon">🔇</span>
           <span id="audioText">MUTE</span>
         </button>
       </div>
     </header>
+
+    <!-- Floating Repo Spotlight Card -->
+    <div class="repo-card" id="currentRepoCard">
+      <div class="repo-card-top">
+        <span class="repo-rank" id="repoRank">MILESTONE #1 OF 60</span>
+        <span class="repo-stars" id="repoStars">★ 552,214</span>
+        <span class="repo-lang" id="repoLang">MARKDOWN</span>
+      </div>
+      <div class="repo-card-main">
+        <h2 class="repo-title" id="repoTitle">codecrafters-io/build-your-own-x</h2>
+        <p class="repo-desc" id="repoDesc">Master programming by recreating your favorite technologies from scratch.</p>
+      </div>
+      <div class="repo-card-actions">
+        <a href="https://github.com/codecrafters-io/build-your-own-x" target="_blank" rel="noopener noreferrer" class="repo-link-btn" id="repoLinkBtn">
+          <span>VIEW ON GITHUB</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        </a>
+        <span class="repo-distance" id="repoDistNotice">APPROACHING IN 50M</span>
+      </div>
+    </div>
 
     <!-- Center Floating Minimalist Quotation -->
     <div class="quote-area">
@@ -81,6 +110,18 @@
 
     <!-- Bottom Minimalist Controls Dock -->
     <footer class="bottom-dock">
+      <!-- Highway Navigation -->
+      <div class="control-group">
+        <span class="group-label">HIGHWAY</span>
+        <div class="pill-buttons">
+          <button class="pill-btn nav-arrow" onclick="jumpMilestone(-1)" title="Jump to Previous Milestone">&larr; PREV</button>
+          <button class="pill-btn highlight-btn" onclick="openRepoModal()" title="View All 60 Repositories">RADAR (60)</button>
+          <button class="pill-btn nav-arrow" onclick="jumpMilestone(1)" title="Jump to Next Milestone">NEXT &rarr;</button>
+        </div>
+      </div>
+
+      <div class="dock-sep"></div>
+
       <!-- Head Selector -->
       <div class="control-group">
         <span class="group-label">HEAD</span>
@@ -99,6 +140,7 @@
           <button class="pill-btn active" data-ball="eightball" onclick="setBallSkin('eightball')">8-Ball</button>
           <button class="pill-btn" data-ball="cyber" onclick="setBallSkin('cyber')">Cyber Grid</button>
           <button class="pill-btn" data-ball="gold" onclick="setBallSkin('gold')">Gold Chrome</button>
+          <button class="pill-btn" data-ball="octocat" onclick="setBallSkin('octocat')">Octocat</button>
         </div>
       </div>
 
@@ -108,9 +150,9 @@
       <div class="control-group">
         <span class="group-label">CAMERA</span>
         <div class="pill-buttons">
-          <button class="pill-btn active" data-cam="broadcast" onclick="setCameraMode('broadcast')">Front</button>
-          <button class="pill-btn" data-cam="chase" onclick="setCameraMode('chase')">Behind</button>
-          <button class="pill-btn" data-cam="profile" onclick="setCameraMode('profile')">Profile</button>
+          <button class="pill-btn active" data-cam="chase" onclick="setCameraMode('chase')">Ahead</button>
+          <button class="pill-btn" data-cam="broadcast" onclick="setCameraMode('broadcast')">Face</button>
+          <button class="pill-btn" data-cam="profile" onclick="setCameraMode('profile')">Side</button>
           <button class="pill-btn" data-cam="closeup" onclick="setCameraMode('closeup')">Focus</button>
           <button class="pill-btn" data-cam="cinematic" onclick="setCameraMode('cinematic')">Orbit</button>
         </div>
@@ -124,13 +166,49 @@
         <div class="pill-buttons">
           <button class="pill-btn" data-pace="jog" onclick="setPacingMode('jog')">Roll</button>
           <button class="pill-btn active" data-pace="sprint" onclick="setPacingMode('sprint')">Fast</button>
-          <button class="pill-btn" data-pace="infinite" onclick="setPacingMode('infinite')">Turbo</button>
+          <button class="pill-btn" data-pace="turbo" onclick="setPacingMode('turbo')">Turbo</button>
+          <button class="pill-btn" data-pace="warp" onclick="setPacingMode('warp')">Warp</button>
         </div>
       </div>
     </footer>
 
   </main>
 
-  <script src="app.js?v=ball_v1"></script>
+  <!-- 60 Repos Radar Modal / Drawer -->
+  <div class="modal-backdrop" id="repoModalBackdrop" onclick="closeRepoModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">⭐</span>
+          <div class="modal-titles">
+            <h3 class="modal-title">GitHub 100k+ Stars Highway Radar</h3>
+            <p class="modal-subtitle">60 Repositories &bull; 14,379,735 Combined Stars &bull; Click to Warp</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeRepoModal()" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-filter-bar">
+        <input type="text" id="repoSearchInput" placeholder="Filter repos by name, language, or keyword..." oninput="filterReposList()" autofocus>
+      </div>
+
+      <div class="repo-grid" id="modalRepoGrid">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Milestone Notification Toast -->
+  <div class="milestone-toast" id="milestoneToast">
+    <div class="toast-icon">🏆</div>
+    <div class="toast-body">
+      <div class="toast-title" id="toastTitle">MILESTONE CROSSED</div>
+      <div class="toast-msg" id="toastMsg">codecrafters-io/build-your-own-x</div>
+    </div>
+  </div>
+
+  <!-- Repos Data & Main App Script -->
+  <script src="repos-data.js?v=gh100k_v2"></script>
+  <script src="app.js?v=gh100k_v2"></script>
 </body>
 </html>

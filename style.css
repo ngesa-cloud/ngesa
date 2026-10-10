@@ -1,15 +1,18 @@
 /* ==============================================================================
-   NGESA // THE IMMORTAL STRIDE — ULTRA-MINIMALIST DESIGN SYSTEM
-   Clean, typographic, distraction-free aesthetic for the solo Kipchoge simulation
+   NGESA // GITHUB 100k+ STARS HIGHWAY — DESIGN SYSTEM
+   Ultra-minimalist, high-performance cyber-aesthetic for the 60 Repo Journey
    ============================================================================== */
 
 :root {
   --bg: #04060a;
-  --panel-bg: rgba(9, 12, 18, 0.65);
+  --panel-bg: rgba(8, 12, 20, 0.72);
+  --panel-solid: #090e18;
   --border: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(0, 255, 102, 0.4);
+  --border-active: rgba(0, 255, 102, 0.45);
   --accent-laser: #00ff66;
   --accent-glow: rgba(0, 255, 102, 0.25);
+  --star-gold: #facc15;
+  --star-gold-glow: rgba(250, 204, 21, 0.3);
   --text-main: #f8fafc;
   --text-muted: #64748b;
   --text-dim: #94a3b8;
@@ -57,7 +60,7 @@ html, body {
 
 @media (max-width: 768px) {
   .hud {
-    padding: 16px;
+    padding: 14px 16px;
   }
 }
 
@@ -67,7 +70,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   pointer-events: auto;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
@@ -88,7 +91,7 @@ html, body {
 .brand-sub {
   font-size: 9px;
   font-family: var(--font-mono);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -97,20 +100,20 @@ html, body {
 .telemetry {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   background: var(--panel-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   padding: 8px 20px;
   border-radius: 9999px;
   border: 1px solid var(--border);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
 }
 
 .stat {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 7px;
   font-family: var(--font-mono);
 }
 
@@ -126,6 +129,7 @@ html, body {
   font-size: 14px;
   font-weight: 700;
   color: var(--text-main);
+  white-space: nowrap;
 }
 
 .stat-val small {
@@ -138,6 +142,11 @@ html, body {
   color: var(--accent-laser);
 }
 
+.stat-val.star-gold {
+  color: var(--star-gold);
+  text-shadow: 0 0 10px var(--star-gold-glow);
+}
+
 .stat-val.stamina-max {
   color: #38bdf8;
   letter-spacing: 0.05em;
@@ -148,23 +157,19 @@ html, body {
   font-weight: 800;
 }
 
-.stat-val.pulse {
-  color: #ef4444;
-  animation: pulseBeat 0.72s infinite ease-in-out;
-}
-
-@keyframes pulseBeat {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
 .divider {
   width: 1px;
   height: 14px;
   background: var(--border);
 }
 
-/* Top Controls (Mute Button) */
+/* Top Controls */
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .sound-pill {
   display: inline-flex;
   align-items: center;
@@ -187,7 +192,140 @@ html, body {
 .sound-pill:hover {
   color: var(--text-main);
   border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Floating Repo Spotlight Card ─────────────────────────────────── */
+.repo-card {
+  align-self: center;
+  pointer-events: auto;
+  max-width: 680px;
+  width: 100%;
+  background: rgba(8, 14, 24, 0.78);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 14px 20px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.repo-card:hover {
+  border-color: rgba(0, 255, 102, 0.3);
+  transform: translateY(-2px);
+}
+
+.repo-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.repo-rank {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent-laser);
+  text-transform: uppercase;
+}
+
+.repo-stars {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--star-gold);
+  background: rgba(250, 204, 21, 0.1);
+  border: 1px solid rgba(250, 204, 21, 0.25);
+  padding: 3px 9px;
+  border-radius: 9999px;
+}
+
+.repo-lang {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.repo-card-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.repo-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.repo-desc {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-dim);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.repo-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.repo-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px 14px;
+  border-radius: 9999px;
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+}
+
+.repo-link-btn:hover {
+  background: var(--accent-laser);
+  color: #030805;
+  border-color: var(--accent-laser);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.repo-distance {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
 /* ── Center Floating Quotation ────────────────────────────────────── */
@@ -198,21 +336,21 @@ html, body {
   pointer-events: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .quote-text {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   color: rgba(248, 250, 252, 0.85);
   font-style: italic;
-  line-height: 1.6;
+  line-height: 1.5;
   transition: opacity 0.5s ease;
 }
 
 .quote-author {
-  font-size: 11px;
+  font-size: 10px;
   font-family: var(--font-mono);
   letter-spacing: 0.12em;
   color: var(--accent-laser);
@@ -226,14 +364,14 @@ html, body {
   pointer-events: auto;
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   background: var(--panel-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 9999px;
   border: 1px solid var(--border);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -241,7 +379,7 @@ html, body {
 .control-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .group-label {
@@ -255,7 +393,7 @@ html, body {
 
 .pill-buttons {
   display: flex;
-  gap: 4px;
+  gap: 3px;
   background: rgba(255, 255, 255, 0.02);
   padding: 3px;
   border-radius: 9999px;
@@ -266,7 +404,7 @@ html, body {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  padding: 5px 12px;
+  padding: 5px 11px;
   border-radius: 9999px;
   font-size: 11px;
   font-weight: 500;
@@ -288,29 +426,292 @@ html, body {
   box-shadow: 0 0 14px var(--accent-glow);
 }
 
+.pill-btn.highlight-btn {
+  color: var(--star-gold);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+}
+
+.pill-btn.highlight-btn:hover {
+  background: rgba(250, 204, 21, 0.15);
+  color: #fff;
+}
+
+.pill-btn.nav-arrow {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
 .dock-sep {
   width: 1px;
   height: 18px;
   background: var(--border);
 }
 
-/* Mobile Responsive */
+/* ── 60 Repos Radar Modal ─────────────────────────────────────────── */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(3, 5, 8, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-content {
+  background: #090e18;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  max-width: 840px;
+  width: 100%;
+  max-height: 82vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-icon {
+  font-size: 24px;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: 0.02em;
+}
+
+.modal-subtitle {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 26px;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: #fff;
+}
+
+.modal-filter-bar {
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.modal-filter-bar input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 10px 16px;
+  color: var(--text-main);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.modal-filter-bar input:focus {
+  border-color: var(--accent-laser);
+}
+
+.repo-grid {
+  padding: 16px 24px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.repo-grid-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.repo-grid-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--accent-laser);
+  transform: translateY(-2px);
+}
+
+.repo-grid-item.active {
+  border-color: var(--star-gold);
+  background: rgba(250, 204, 21, 0.05);
+}
+
+.grid-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.grid-rank {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-laser);
+}
+
+.grid-stars {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--star-gold);
+}
+
+.grid-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grid-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  height: 28px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.grid-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.grid-lang {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.grid-warp {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent-laser);
+  font-weight: 700;
+}
+
+/* ── Milestone Notification Toast ─────────────────────────────────── */
+.milestone-toast {
+  position: fixed;
+  top: 86px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+  background: rgba(14, 24, 38, 0.95);
+  border: 1px solid var(--accent-laser);
+  box-shadow: 0 10px 30px rgba(0, 255, 102, 0.25);
+  border-radius: 9999px;
+  padding: 10px 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.milestone-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.toast-icon {
+  font-size: 18px;
+}
+
+.toast-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.toast-title {
+  font-size: 9px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--accent-laser);
+}
+
+.toast-msg {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ── Mobile Responsive ────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .topbar {
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
   }
   .telemetry {
     order: 3;
     width: 100%;
     justify-content: space-around;
-    padding: 8px 12px;
+    padding: 6px 12px;
+  }
+  .repo-card {
+    padding: 12px 14px;
+    max-width: 95vw;
+  }
+  .repo-title {
+    font-size: 14px;
   }
   .bottom-dock {
     border-radius: 18px;
-    gap: 10px;
-    padding: 10px 14px;
-    max-width: 95vw;
+    gap: 8px;
+    padding: 8px 12px;
+    max-width: 96vw;
   }
   .dock-sep {
     display: none;
